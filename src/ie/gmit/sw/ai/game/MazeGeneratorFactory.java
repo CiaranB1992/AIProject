@@ -1,0 +1,26 @@
+package ie.gmit.sw.ai.game;
+
+import ie.gmit.sw.ai.game.MazeGenerator.*;
+public class MazeGeneratorFactory {
+	private static MazeGeneratorFactory mgf = new MazeGeneratorFactory();
+	
+	private MazeGeneratorFactory(){		
+	}
+	
+	public static MazeGeneratorFactory getInstance(){
+		return mgf;
+	}
+	
+	public MazeGenerator getMazeGenerator(MazeGenerator.GeneratorAlgorithm algorithm, int rows, int cols){
+		if (algorithm == GeneratorAlgorithm.BinaryTree){
+			return new BinaryTreeMazeGenerator(rows, cols);
+		}else if (algorithm == GeneratorAlgorithm.RecursiveBacktracker){
+			return new RecursiveBacktrackerMazeGenerator(rows, cols);
+		}else if (algorithm == GeneratorAlgorithm.HuntAndKill){
+			return new HuntAndKillMazeGenerator(rows, cols);			
+		}else{
+			return new RandomDepthFirstMazeGenerator(rows, cols);			
+		}
+		
+	}	
+}
