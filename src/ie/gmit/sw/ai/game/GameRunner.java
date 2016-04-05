@@ -5,8 +5,7 @@ import java.awt.event.*;
 import javax.swing.*;
 
 import net.sourceforge.jFuzzyLogic.FIS;
-import net.sourceforge.jFuzzyLogic.*;
-
+import net.sourceforge.jFuzzyLogic.FunctionBlock;
 
 public class GameRunner implements KeyListener{
 	private static final int MAZE_DIMENSION = 50;
@@ -17,16 +16,20 @@ public class GameRunner implements KeyListener{
 	private static int currentCol;
 	private static boolean walkWalls = false;
 	private static int walkCount = 0;
-	private int GoldenX = 0;
-	private int GoldenY = 0;
 	private static int[][] enemyXY = new int[16][2];
-	private static boolean notMoved;
 	private static boolean holdWeapon = false;
-	private static boolean victory = true;
+	public static boolean victory = true;
 	
 	private static FIS fis = FIS.load("fcl/combat.fcl", true);
 	private static FunctionBlock combatFB = fis.getFunctionBlock(null);
 	
+	public static void setGoal(Node goal) {
+		GameRunner.goal = goal;
+	}
+	
+	public static Node getGoal() {
+		return goal;
+	}
 	
 	public GameRunner() throws Exception{
 		
@@ -36,26 +39,6 @@ public class GameRunner implements KeyListener{
 		maze = generator.getMaze();
 		goal = generator.getGoalNode();
     	view = new GameView(maze);
-        
-        
-        //Uninformed Searches
-        //-------------------------------------------------------
-        //Traversator t = new RandomWalk();
-        //Traversator t = new BruteForceTraversator(true);
-        //Traversator t = new RecursiveDFSTraversator();
-        //Traversator t = new DepthLimitedDFSTraversator(maze.length / 2);
-        //Traversator t = new IDDFSTraversator();
-        
-        //Heuristic Searches
-        //-------------------------------------------------------       
-        //Traversator t = new BasicHillClimbingTraversator(goal);     
-        //Traversator t = new SteepestAscentHillClimbingTraversator(goal);
-        //Traversator t = new SimulatedAnnealingTraversator(goal);
-        //Traversator t = new BestFirstTraversator(goal);
-        //Traversator t = new BeamTraversator(goal, 2);
-        //Traversator t = new AStarTraversator(goal);
-        //Traversator t = new IDAStarTraversator(goal);
-        //t.traverse(maze, maze[0][0]);
     	
     	placePlayer();
     	placeEnemy();
@@ -151,94 +134,94 @@ public class GameRunner implements KeyListener{
 		updateView();
 	}
 	
-	private static void EnemySearchMove(){
-		for(int i = 0; i < 16; i++){
-			int row = enemyXY[i][0];
-			int col =  enemyXY[i][1];
-		
-			int direction = 0;
-			if(row - currentRow > 0)
-			{
-				if(isValidEnemyMove(row, col,row, col+1 , Node.Direction.East))
-				{
-					direction = 2;
-				}
-				else
-				{
-					if(col - currentCol > 0)
-					{
-						if(isValidEnemyMove(row, col,row-1 , col, Node.Direction.North))
-						{
-							direction = 1;
-						}
-					}
-					else
-					{
-						if(isValidEnemyMove(row, col, row + 1, col, Node.Direction.South))
-						{
-							direction = 3;
-						}
-					}
-				}
-			}
-			else
-			{
-				if(isValidEnemyMove(row, col,row,col -1, Node.Direction.West))
-				{
-					direction = 2;
-				}
-				else
-				{
-					if(col - currentCol > 0)
-					{
-						if(isValidEnemyMove(row, col,row - 1,col, Node.Direction.North))
-						{
-							direction = 1;
-						}
-					}
-					else
-					{
-						if(isValidEnemyMove(row, col,row +1 , col, Node.Direction.South))
-						{
-							direction = 3;
-						}
-					}
-				}
-				
-			}
-			
-			
-			if(direction == 0){
-				if (isValidEnemyMove(row, col,row,col+1, Node.Direction.East)){
-					maze[row][col].setValue(' ');
-					maze[row][col+1].setValue('T');
-					enemyXY[i][1] = col+1;  
-				}
-			}else if(direction == 1){
-				if (isValidEnemyMove(row, col,row+1,col, Node.Direction.South)){
-					maze[row][col].setValue(' ');
-					maze[row+1][col].setValue('T');
-					enemyXY[i][0] = row+1;
-				}
-				
-			}else if(direction == 2){
-				if (isValidEnemyMove(row, col,row,col-1, Node.Direction.West)){
-					maze[row][col].setValue(' ');
-					maze[row][col-1].setValue('T');
-					enemyXY[i][1] = col-1;
-				}
-				
-			}else{
-				if (isValidEnemyMove(row, col,row-1,col, Node.Direction.North)){
-					maze[row][col].setValue(' ');
-					maze[row-1][col].setValue('T');
-					enemyXY[i][0] = row-1;
-				}	
-			}
-			updateView();
-		}
-		
-	}
+//	private static void EnemySearchMove(){
+//		for(int i = 0; i < 16; i++){
+//			int row = enemyXY[i][0];
+//			int col =  enemyXY[i][1];
+//		
+//			int direction = 0;
+//			if(row - currentRow > 0)
+//			{
+//				if(isValidEnemyMove(row, col,row, col+1 , Node.Direction.East))
+//				{
+//					direction = 2;
+//				}
+//				else
+//				{
+//					if(col - currentCol > 0)
+//					{
+//						if(isValidEnemyMove(row, col,row-1 , col, Node.Direction.North))
+//						{
+//							direction = 1;
+//						}
+//					}
+//					else
+//					{
+//						if(isValidEnemyMove(row, col, row + 1, col, Node.Direction.South))
+//						{
+//							direction = 3;
+//						}
+//					}
+//				}
+//			}
+//			else
+//			{
+//				if(isValidEnemyMove(row, col,row,col -1, Node.Direction.West))
+//				{
+//					direction = 2;
+//				}
+//				else
+//				{
+//					if(col - currentCol > 0)
+//					{
+//						if(isValidEnemyMove(row, col,row - 1,col, Node.Direction.North))
+//						{
+//							direction = 1;
+//						}
+//					}
+//					else
+//					{
+//						if(isValidEnemyMove(row, col,row +1 , col, Node.Direction.South))
+//						{
+//							direction = 3;
+//						}
+//					}
+//				}
+//				
+//			}
+//			
+//			
+//			if(direction == 0){
+//				if (isValidEnemyMove(row, col,row,col+1, Node.Direction.East)){
+//					maze[row][col].setValue(' ');
+//					maze[row][col+1].setValue('T');
+//					enemyXY[i][1] = col+1;  
+//				}
+//			}else if(direction == 1){
+//				if (isValidEnemyMove(row, col,row+1,col, Node.Direction.South)){
+//					maze[row][col].setValue(' ');
+//					maze[row+1][col].setValue('T');
+//					enemyXY[i][0] = row+1;
+//				}
+//				
+//			}else if(direction == 2){
+//				if (isValidEnemyMove(row, col,row,col-1, Node.Direction.West)){
+//					maze[row][col].setValue(' ');
+//					maze[row][col-1].setValue('T');
+//					enemyXY[i][1] = col-1;
+//				}
+//				
+//			}else{
+//				if (isValidEnemyMove(row, col,row-1,col, Node.Direction.North)){
+//					maze[row][col].setValue(' ');
+//					maze[row-1][col].setValue('T');
+//					enemyXY[i][0] = row-1;
+//				}	
+//			}
+//			updateView();
+//		}
+//		
+//	}
 	
 	private static void updateView(){
 		view.setCurrentRow(currentRow);
@@ -406,6 +389,7 @@ public class GameRunner implements KeyListener{
 	private boolean isValidMove(int r, int c, Node.Direction direction){
 		if(r == view.getFinRow() && c == view.getFinCol() ){
 			System.exit(1);
+			System.out.println("You have found the exit!");
 		}
 		
 		if(direction == Node.Direction.North){

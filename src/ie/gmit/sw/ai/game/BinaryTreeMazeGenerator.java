@@ -33,18 +33,18 @@ public class BinaryTreeMazeGenerator extends AbstractMazeGenerator {
 		//addFeature('H', 'X', featureNumber, maze);
 	}
 	
-	private void prepareMaze(Node[][] maze, int max){
-		for (int counter = 0; counter < max; counter++){
-			int row = (int) (Math.random()*maze.length);
-			int col = (int) (Math.random()*maze.length);
-			if(maze[row][col].getValue() == 'X'){
-				counter--;
-			}
-			else{
-				maze[row][col].setValue('X');
-			}
-		}
-	}
+//	private void prepareMaze(Node[][] maze, int max){
+//		for (int counter = 0; counter < max; counter++){
+//			int row = (int) (Math.random()*maze.length);
+//			int col = (int) (Math.random()*maze.length);
+//			if(maze[row][col].getValue() == 'X'){
+//				counter--;
+//			}
+//			else{
+//				maze[row][col].setValue('X');
+//			}
+//		}
+//	}
 	
 	private void addFeature(char feature, char replace, int number, Node[][] maze){
 		int counter = 0;
