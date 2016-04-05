@@ -14,9 +14,11 @@ improvised by making the enemies move independantly of each other whenever the p
 When the game is completed or the player dies the program exits and a message appears in
 the eclipse console.
 
-The Jar file had compiling errors so I did not include one. The program runs fine from within eclipse
-but I am speculating that my eclipse needs updating and am working on it. If I get the
-jar file running i will upload it. The Jar file is in the lib folder but will not run
-on my pc. The broken Jar file is called MazeGame.jar
+The Jar file had compiling errors but i included one which appears to be broken, at least
+on my eclipse. The program runs fine from within eclipse
+but I am speculating that my eclipse needs updating in order for jars to work
+ and am working on it. If I get the jar file running i will upload it. 
+The Jar file is in the lib folder but will not run on my pc. 
+The broken Jar file is called MazeGame.jar
 
 The game is run by using the GameRunner class after downloading my entire project from github
