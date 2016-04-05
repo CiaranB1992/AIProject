@@ -16,6 +16,7 @@ the eclipse console.
 
 The Jar file had compiling errors so I did not include one. The program runs fine from within eclipse
 but I am speculating that my eclipse needs updating and am working on it. If I get the
-jar file running i will upload it.
+jar file running i will upload it. The Jar file is in the lib folder but will not run
+on my pc. The broken Jar file is called MazeGame.jar
 
 The game is run by using the GameRunner class after downloading my entire project from github
