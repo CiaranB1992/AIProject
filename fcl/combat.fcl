@@ -1,0 +1,42 @@
+FUNCTION_BLOCK CombatCalculation
+
+VAR_INPUT
+	player : REAL;
+	enemyStr : REAL;
+END_VAR
+
+VAR_OUTPUT
+	risk : REAL;
+END_VAR
+
+FUZZIFY player
+ TERM equipped := (0, 0) (1, 1);
+ TERM unequipped := (0, 1) (1, 0);
+END_FUZZIFY
+
+FUZZIFY enemyStr
+ TERM easy := (0, 1) (1, 0);
+ TERM difficult := (0, 0) (1, 1) ;
+END_FUZZIFY
+
+DEFUZZIFY risk
+ TERM low := (0, 1) (20, 0);
+ TERM medium := trian 15 25 35;
+ TERM high := (30, 0) (60, 1);
+ METHOD : COG;
+ DEFAULT := 0;
+END_DEFUZZIFY
+
+RULEBLOCK No1
+	AND : MIN;
+	ACT : MIN;
+	ACCU : MAX;
+	
+	RULE 1 : IF player IS equipped AND enemyStr IS easy THEN risk IS low;
+	RULE 2 : IF player IS unequipped AND enemyStr IS easy THEN risk IS medium;
+	RULE 3 : IF player IS equipped AND enemyStr IS difficult THEN risk is medium;
+	RULE 4 : IF player IS unequipped AND enemyStr IS difficult THEN risk IS high;
+	
+END_RULEBLOCK
+
+END_FUNCTION_BLOCK

@@ -11,7 +11,7 @@ import ie.gmit.sw.ai.game.Node.Direction;
 public class GameView extends JPanel implements ActionListener{
 	private static final long serialVersionUID = 1L;
 	public static final int DEFAULT_VIEW_SIZE = 800;	
-	private static final int IMAGE_COUNT = 11;
+	private static final int IMAGE_COUNT = 12;
 	private int cellspan = 5;	
 	private int cellpadding = 2;
 	private Node[][] maze;
@@ -24,6 +24,8 @@ public class GameView extends JPanel implements ActionListener{
 	private int currentCol;
 	private int finRow;
 	private int finCol;
+	private int barRow;
+	private int barCol;
 	private boolean zoomOut = false;
 	private int imageIndex = -1;
 		
@@ -33,6 +35,23 @@ public class GameView extends JPanel implements ActionListener{
 
 	public void setPlayer_state(int player_state) {
 		this.player_state = player_state;
+	}
+	
+
+	public int getBarRow() {
+		return barRow;
+	}
+
+	public void setBarRow(int barRow) {
+		this.barRow = barRow;
+	}
+
+	public int getBarCol() {
+		return barCol;
+	}
+
+	public void setBarCol(int barCol) {
+		this.barCol = barCol;
 	}
 
 	public int getFinRow() {
@@ -46,7 +65,7 @@ public class GameView extends JPanel implements ActionListener{
 	public GameView(Node[][] maze) throws Exception{
 		init();
 		this.maze = maze;
-		setBackground(Color.LIGHT_GRAY);
+		setBackground(Color.BLACK);
 		setDoubleBuffered(true);
 		timer = new Timer(300, this);
 		timer.start();
@@ -98,7 +117,6 @@ public class GameView extends JPanel implements ActionListener{
 	        		
 	        		char ch;
 	        		ch = maze[row][col].getValue();
-	        		System.out.println(ch);
 	        		
 	        		if (ch == 'T'){
 	    				g2.setColor(Color.BLUE);
@@ -107,7 +125,7 @@ public class GameView extends JPanel implements ActionListener{
 	    			}
 	        		
 	    			if (row == currentRow && col == currentCol){
-	    				g2.setColor(Color.YELLOW);
+	    				g2.setColor(Color.CYAN);
 	    				g2.fillRect(x1, y1, size, size);
 	    				continue;
 	    			}
@@ -118,19 +136,27 @@ public class GameView extends JPanel implements ActionListener{
 	    				continue;
 	    			}
 	    			
+	    			if (ch == 'G'){
+	    				g2.setColor(Color.YELLOW);
+	    				g2.fillRect(x1, y1, size, size);
+	    				continue;
+	    			}
+	    			
   	
 	        		if (ch == 'X'){        			
-	        			imageIndex = 0;;
+	        			imageIndex = 0;
 	        		}else if (ch == 'W'){
-	        			imageIndex = 1;;
+	        			imageIndex = 1;
 	        		}else if (ch == '?'){
-	        			imageIndex = 2;;
+	        			imageIndex = 2;
 	        		}else if (ch == 'B'){
-	        			imageIndex = 3;;
-	        		}else if (ch == 'H'){
-	        			imageIndex = 4;;
+	        			imageIndex = 3;
+	        		}else if (ch == 'G'){
+	        			imageIndex = 11;
 	        		}else if (ch == 'E'){
 	        			imageIndex = player_state;
+	        		}else if(ch == 'T'){
+	        			imageIndex = enemy_state;
 	        		}else{
 	        			imageIndex = -1;
 	        		}
@@ -189,40 +215,32 @@ public class GameView extends JPanel implements ActionListener{
 	        		int x2 = (col + 1) * size;
 	        		int y2 = (row + 1) * size;
 	        		
-	        		char ch = 'X';
-	        		try{
-	        			ch = zoomView[row][col].getValue();
-	        			if(ch == 'T'){
-	        				g2.setColor(Color.BLACK);
-	        				g2.fillRect(x1, y1, size, size);
-	        				continue;
-	        			}
+	        		char ch = zoomView[row][col].getValue();
+	        		//char ch = 'X';
+	        		//try{
 	        			
-	        			if(ch == 'L'){
-	        				System.out.println("in");
-	        				g2.setColor(Color.WHITE);
-	        				g2.fillRect(x1, y1, size, size);
-	        				continue;
-	        			}
-	        		}
-	        		catch(Exception e){
-	        			System.out.println("Failed to set ch for row: " + row + " and col: " + col);
-	        		}
+	        			
+	        		//}
+	        		//catch(Exception e){
+	        		//	System.out.println("Failed to set ch for row: " + row + " and col: " + col);
+	        		//}
 	        		
 	        		
 	        		
 	        		if (ch == 'X'){        			
-	        			imageIndex = 0;;
+	        			imageIndex = 0;
 	        		}else if (ch == 'W'){
-	        			imageIndex = 1;;
+	        			imageIndex = 1;
 	        		}else if (ch == '?'){
-	        			imageIndex = 2;;
+	        			imageIndex = 2;
 	        		}else if (ch == 'B'){
-	        			imageIndex = 3;;
+	        			imageIndex = 3;
 	        		}else if (ch == 'H'){
-	        			imageIndex = 4;;
+	        			imageIndex = 4;
+	        		}else if (ch == 'G'){
+	        			imageIndex = 11;
 	        		}else if (ch == 'E'){
-	        			imageIndex = player_state;;       			
+	        			imageIndex = player_state;       			
 	        		}else if(ch == 'T'){
 	        			imageIndex = enemy_state;
 	        		}else{
@@ -300,5 +318,6 @@ public class GameView extends JPanel implements ActionListener{
 		images[8] = ImageIO.read(new java.io.File("resources/fly_swat_down.png"));
 		images[9] = ImageIO.read(new java.io.File("resources/spider_down_weapon.png"));
 		images[10] = ImageIO.read(new java.io.File("resources/spider_up_weapon.png"));
+		images[11] = ImageIO.read(new java.io.File("resources/Golden_Bar.png"));
 	}
 }
